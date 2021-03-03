@@ -110,4 +110,31 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 	{
 		return channel;
 	}
+	
+	public int darCategoria()
+	{
+		return Integer.parseInt(categoria);
+	}
+	public String darPais()
+	{
+		return pais;
+	}
+	public String darPublishTime()
+	{
+		return published;
+	}
+	public String darViews()
+	{
+		return views;
+	}
+	public String darDilikes()
+	{
+		return dislikes;
+	}
+	
+	public String darTags()
+	{
+		return tags;
+	}
+	
 }
