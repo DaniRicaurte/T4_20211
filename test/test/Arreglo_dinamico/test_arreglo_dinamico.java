@@ -10,9 +10,9 @@ public class test_arreglo_dinamico {
 	    public static void main(String[] args) 
 	    {
 	        ArregloDinamico<Integer> arr = new ArregloDinamico<Integer>(500);
-	        for(int i = 0; i < 500; i++)
+	        for(int i = 0; i < 21; i++)
 	        {
-	            arr.addLast(ThreadLocalRandom.current().nextInt(0, 900000000));
+	            arr.addLast(ThreadLocalRandom.current().nextInt(0, 200));
 	        }
 	        System.out.println("Agregó");
 	        Ordenamiento<Integer> ord = new Ordenamiento<Integer>();
