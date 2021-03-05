@@ -176,6 +176,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 	@Override
 	public void addFirst(T elemento) 
 	{
+		tamanoAct++;
 		if(tamanoAct == tamanoMax)
 		{
 			tamanoMax = tamanoMax*2;
@@ -197,7 +198,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 				elementos[i+1]=copia[i];;
 			}
 		}
-		tamanoAct++;
+		
 		// TODO Auto-generated method stub
 
 	}
@@ -214,7 +215,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 			{
 				tamanoMax = tamanoMax*2;
 				T[] copia = elementos;
-				elementos = (T[]) new Object[tamanoMax];
+				elementos = (T[]) new Comparable[tamanoMax];
 				for(int i = 0;i<posicion;i++)
 				{
 					elementos[i]=copia[i];
@@ -228,7 +229,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 			else
 			{
 				T[] copia = elementos;
-				elementos = (T[]) new Object[tamanoMax];
+				elementos = (T[]) new Comparable[tamanoMax];
 				for(int i = 0;i<posicion;i++)
 				{
 					elementos[i]=copia[i];
@@ -457,14 +458,16 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 	}
 
 
-	public ILista<T> sublistaR1(Comparator<T> comparador, T elemento)
+	public ArregloDinamico<T> sublistaR1(Comparator<T> comparador, T elemento)
 	{
 		ArregloDinamico<T> resp = new ArregloDinamico<T>(50000);
 		for(int i = 0; i<tamanoAct;i++)
 		{
-			if(comparador.compare(elementos[i], elemento)==0)
+			int comparacion = comparador.compare(elementos[i], elemento);
+			if(comparacion==0)
 			{
-				resp.addFirst(elementos[i]);
+				T act = elementos[i];
+				resp.addLast(act);
 			}
 		}
 		
@@ -494,6 +497,11 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 				cantAct = 1;
 				elementoAct = elementos[i];
 			}
+		}
+		if(cantAct>cantMayor)
+		{
+			cantMayor = cantAct;
+			elementoMayor = elementoAct;
 		}
 		respuesta = elementoMayor.toString()+"///"+cantMayor;
 		return respuesta;

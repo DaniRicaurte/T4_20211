@@ -97,7 +97,6 @@ public class Ordenamiento<T extends Comparable<T>>
 	public void ordenarMerge(ILista<T> lista, Comparator<T> criterio, boolean ascendente)
 	{
 		int size = lista.size();
-		System.out.println(size);
 		if(size>1)
 		{
 			int mid = size/2;
