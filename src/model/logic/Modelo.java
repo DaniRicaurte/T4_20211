@@ -14,6 +14,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import model.data_structures.ArregloDinamico;
+import model.data_structures.Categoria;
 import model.data_structures.IArregloDinamico;
 import model.data_structures.ILista;
 import model.data_structures.ListaEncadenada;
@@ -31,12 +32,21 @@ public class Modelo
 	 * Atributos del modelo del mundo
 	 */
 	private ILista<YoutubeVideo> datos;
-
+	private ILista<Categoria> categorias;
 	
 
 	public Modelo()
 	{
-		
+		categorias = new ArregloDinamico<Categoria>(50);
+		try 
+		{
+			cargarCategorias();
+		} 
+		catch (Exception e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -107,6 +117,34 @@ public class Modelo
 		return datos.sublista(dato);
 	}
 	
+	public ILista<Categoria> darCategorias()
+	{
+		return categorias;
+	}
+	public void cargarCategorias() throws Exception
+	{
+
+		final Reader lector = new InputStreamReader (new FileInputStream(new File("./data/caterory_id.csv")),"UTF-8");
+		final CSVParser parser = new CSVParser(lector, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
+		
+
+		try
+		{
+			for(final CSVRecord record : parser)
+			{
+				
+				String id = record.get("video_id"); 
+				Categoria nueva = new Categoria(id);
+				categorias.addLast(nueva); 
+			}
+		}
+		catch(Exception e) {System.out.println("algo");}
+		finally
+		{
+			lector.close();
+			parser.close();
+		}
+	}
 	public void cargarDatos() throws Exception
 	{
 		final Reader lector = new InputStreamReader (new FileInputStream(new File("./data/videos-all.csv")),"UTF-8");
