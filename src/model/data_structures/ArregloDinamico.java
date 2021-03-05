@@ -1,5 +1,7 @@
 package model.data_structures;
 
+import java.util.Comparator;
+
 /**
  * 2019-01-23
  * Estructura de Datos Arreglo Dinamico de Strings.
@@ -455,7 +457,46 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 	}
 
 
+	public ILista<T> sublistaR1(Comparator<T> comparador, T elemento)
+	{
+		ArregloDinamico<T> resp = new ArregloDinamico<T>(50000);
+		for(int i = 0; i<tamanoAct;i++)
+		{
+			if(comparador.compare(elementos[i], elemento)==0)
+			{
+				resp.addFirst(elementos[i]);
+			}
+		}
+		
+		return resp;
+	}
 
-
+	public String mayorContado(Comparator<T> comparador)
+	{
+		String respuesta ="";
+		T elementoAct = elementos[0];
+		T elementoMayor = elementoAct;
+		int cantAct = 1;
+		int cantMayor = cantAct;
+		for(int i = 1; i<tamanoAct; i++)
+		{
+			if(comparador.compare(elementoAct,elementos[i])==0)
+			{
+				cantAct++;
+			}
+			else
+			{
+				if(cantAct>cantMayor)
+				{
+					cantMayor = cantAct;
+					elementoMayor = elementoAct;
+				}
+				cantAct = 1;
+				elementoAct = elementos[i];
+			}
+		}
+		respuesta = elementoMayor.toString()+"///"+cantMayor;
+		return respuesta;
+	}
 
 }

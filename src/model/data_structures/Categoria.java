@@ -3,16 +3,16 @@ package model.data_structures;
 
 public class Categoria 
 {
-	private int id;
-	private String nombreId;
+	private String id;
 
-	public Categoria(int pId)
+
+	public Categoria(String pId)
 	{
 		id = pId;
 	}
 
 
-	public int darId()
+	public String darId()
 	{
 		return id;
 	}

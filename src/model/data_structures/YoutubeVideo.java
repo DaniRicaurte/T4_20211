@@ -137,4 +137,9 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 		return tags;
 	}
 	
+	public String toString()
+	{
+		return title+":::"+channel+":::"+published+":::"+views+":::"+likes+":::"+dislikes+tags+":::"+id;
+	}
+	
 }

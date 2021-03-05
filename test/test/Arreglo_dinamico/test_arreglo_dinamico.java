@@ -10,9 +10,10 @@ public class test_arreglo_dinamico {
 	    public static void main(String[] args) 
 	    {
 	        ArregloDinamico<Integer> arr = new ArregloDinamico<Integer>(500);
-	        for(int i = 0; i < 21; i++)
+	        for(int i = 0; i < 10; i++)
 	        {
-	            arr.addLast(ThreadLocalRandom.current().nextInt(0, 200));
+	            arr.addLast(ThreadLocalRandom.current().nextInt(0, 8));
+	            System.out.println(arr.getElement(i+1));
 	        }
 	        System.out.println("Agregó");
 	        Ordenamiento<Integer> ord = new Ordenamiento<Integer>();
@@ -22,6 +23,8 @@ public class test_arreglo_dinamico {
 	        
 	        System.out.println(arr.size());
 	        
+	        String revisar = arr.mayorContado(comp);
+	        System.out.println(revisar);
 	        boolean enOrden = true;
 	        for(int i = 1; i < arr.size() && enOrden;i++)
 	        {
