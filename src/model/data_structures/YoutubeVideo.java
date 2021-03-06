@@ -91,13 +91,64 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 		return rta;
 	}
 	
+	/**
+	 * Clase con comparador para likes
+	 * @author Juanse
+	 *
+	 */
 	public static class ComparadorXLikes implements Comparator<YoutubeVideo>
 	{
+		/**
+		 * Retorna cual de los dos videos tiene mas likes. 
+		 * @return <0 si el video1 tiene menos likes que el video2. <0 si el video1 tiene mas likes que el video2. 0 si los dos videos tienen los mismos likes
+		 */
 		public int compare(YoutubeVideo video1, YoutubeVideo video2)
 		{
 			int likes1 = Integer.parseInt(video1.darLikes());
 			int likes2 = Integer.parseInt(video2.darLikes());
 			return likes1-likes2;
+		}
+	}
+	
+	/**
+	 * Clase con comparador de Pais y Categoria
+	 * @author Juanse
+	 *
+	 */
+	public static class ComparadorPaisyCategoria implements Comparator<YoutubeVideo>
+	{
+		/**
+		 * Verifica si los dos videos son del mismo pais y categoria
+		 * @return 0 si los dos videos son del mismo pais y categoria. 1 de lo contrario
+		 */
+		public int compare(YoutubeVideo o1, YoutubeVideo o2)
+	 	{
+	 		int rta = 1;
+	 		int condicion1 = o1.darPais().compareToIgnoreCase(o2.darPais());
+	 		int condicion2 = o1.darCategoria()-o2.darCategoria();
+			if(condicion1 == 0 && condicion2 == 0 )
+			{
+				rta = 0;
+			}
+			return 1;	
+	 	} 		
+	}	
+	
+	
+	/**
+	 * Clase con comparador de categoria
+	 * @author Juanse
+	 *
+	 */
+	public static class ComparadorCategoria implements Comparator<YoutubeVideo>
+	{
+		/**
+		 * Verifica si los dos videos son de la misma categoria.
+		 * @return 0 si los dos videos son de la misma categoria. Cualquier otro numero de lo contrario
+		 */
+		public int compare (YoutubeVideo o1, YoutubeVideo o2)
+		{
+			return o1.darCategoria()-o2.darCategoria();
 		}
 	}
 	
@@ -127,7 +178,7 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 	{
 		return views;
 	}
-	public String darDilikes()
+	public String darDislikes()
 	{
 		return dislikes;
 	}

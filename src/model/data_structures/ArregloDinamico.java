@@ -428,9 +428,6 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 		}
 	}
 	
-	
-
-
 
 	@Override
 	public ILista<T> subList(int posi, int numElementos) 
@@ -457,7 +454,12 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 		return respuesta;
 	}
 
-
+	/**
+	 * Crea una sublista con todos los elementos que sean "iguales" al elemento recibido parametro
+	 * @param comparador que revisa si el elemento actual contiene los atributos deseados del elemento recibido por parametro
+	 * @param elemento con los elementos con los que se quiere hacer la sublista
+	 * @return la sublista con todos los elementos que contienen los elementos deseados, que estan incluidos en el elemento recibido por parametro. 
+	 */
 	public ArregloDinamico<T> sublistaR1(Comparator<T> comparador, T elemento)
 	{
 		ArregloDinamico<T> resp = new ArregloDinamico<T>(50000);
@@ -474,36 +476,44 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 		return resp;
 	}
 
+	/**
+	 * Retorna el elemento con mas ocurrencias en una lista ordenada y la cantidad de veces que aparece en la lista
+	 * @param comparador que se usa para contar si un elemento cuenta como repetido o no
+	 * @return el toString() del elemento con mas ocurrencias unido a la cantidad de veces que aparece en la lista usando "///". Si el tamanoAct del arreglo es 0 retorna un mensaje vacio
+	 */
 	public String mayorContado(Comparator<T> comparador)
 	{
 		String respuesta ="";
-		T elementoAct = elementos[0];
-		T elementoMayor = elementoAct;
-		int cantAct = 1;
-		int cantMayor = cantAct;
-		for(int i = 1; i<tamanoAct; i++)
+		if(tamanoAct != 0)
 		{
-			if(comparador.compare(elementoAct,elementos[i])==0)
+			T elementoAct = elementos[0];
+			T elementoMayor = elementoAct;
+			int cantAct = 1;
+			int cantMayor = cantAct;
+			for(int i = 1; i<tamanoAct; i++)
 			{
-				cantAct++;
-			}
-			else
-			{
-				if(cantAct>cantMayor)
+				if(comparador.compare(elementoAct,elementos[i])==0)
 				{
-					cantMayor = cantAct;
-					elementoMayor = elementoAct;
+					cantAct++;
 				}
-				cantAct = 1;
-				elementoAct = elementos[i];
+				else
+				{
+					if(cantAct>cantMayor)
+					{
+						cantMayor = cantAct;
+						elementoMayor = elementoAct;
+					}
+					cantAct = 1;
+					elementoAct = elementos[i];
+				}
 			}
+			if(cantAct>cantMayor)
+			{
+				cantMayor = cantAct;
+				elementoMayor = elementoAct;
+			}
+			respuesta = elementoMayor.toString()+"///"+cantMayor;
 		}
-		if(cantAct>cantMayor)
-		{
-			cantMayor = cantAct;
-			elementoMayor = elementoAct;
-		}
-		respuesta = elementoMayor.toString()+"///"+cantMayor;
 		return respuesta;
 	}
 
