@@ -1,17 +1,23 @@
 package model.logic;
 
+import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.Reader;
 import java.lang.Object;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+
+import com.sun.tools.classfile.InnerClasses_attribute.Info;
 
 import model.data_structures.ArregloDinamico;
 import model.data_structures.Categoria;
@@ -19,6 +25,7 @@ import model.data_structures.IArregloDinamico;
 import model.data_structures.ILista;
 import model.data_structures.ListaEncadenada;
 import model.data_structures.YoutubeVideo;
+import utils.Ordenamiento;
 
 
 /**
@@ -33,6 +40,8 @@ public class Modelo
 	 */
 	private ILista<YoutubeVideo> datos;
 	private ILista<Categoria> categorias;
+	private ArregloDinamico <YoutubeVideo> descendenteViews;
+	private ArregloDinamico <YoutubeVideo> descendenteLikes;
 	
 
 	public Modelo()
@@ -60,7 +69,23 @@ public class Modelo
 		}
 		else
 		{
-			datos = new ArregloDinamico<YoutubeVideo>(7);
+			Comparator<YoutubeVideo> criterio = new YoutubeVideo.ComparadorNombre();
+			Comparator<YoutubeVideo> criterio1 = (Comparator<YoutubeVideo>) new YoutubeVideo.ComparadorXViews();
+			Comparator<YoutubeVideo> criterio2 = new YoutubeVideo.ComparadorXLikes();
+			
+			Ordenamiento<YoutubeVideo> ordenador = new Ordenamiento<YoutubeVideo>();
+			
+			datos = new ArregloDinamico<YoutubeVideo>(3800);
+			ordenador.ordenarMerge(datos,criterio , true);
+			
+			descendenteViews = new ArregloDinamico<YoutubeVideo>(datos.size());
+			descendenteViews = (ArregloDinamico<YoutubeVideo>) datos;
+			ordenador.ordenarMerge(descendenteViews,criterio1 , false);
+			
+			descendenteLikes = new ArregloDinamico<YoutubeVideo>(datos.size());
+			descendenteLikes= descendenteViews;
+			ordenador.ordenarMerge(descendenteLikes, criterio2, false);
+			
 		}
 		try
 		{
@@ -117,13 +142,97 @@ public class Modelo
 		return datos.sublista(dato);
 	}
 	
+
+	
 	public ILista<Categoria> darCategorias()
 	{
 		return categorias;
 	}
+	
+	
+	public int darNumeroDeCategorias()
+	{
+		return categorias.size();
+	}
+	
+	public ArregloDinamico<YoutubeVideo> videosConMasViewsEnTendenciaDeUnPaisDadaUnaCategoria(String pNumero, String pais, String pId)
+	{
+		int numero= Integer.parseInt(pNumero);
+		ArregloDinamico<YoutubeVideo> answer =new ArregloDinamico<YoutubeVideo>(100);
+		
+		YoutubeVideo.ComparadorPaisYCategoria comparadorPaisCategoria = new YoutubeVideo.ComparadorPaisYCategoria();
+		
+		YoutubeVideo videoComparar= new YoutubeVideo (pId,"" ,"" ,"" ,"" ,"" ,"" , "","" ,"" ,"" ,"" ,"" ,"" ,"" ,"" , pais);
+		
+		
+		answer= descendenteViews.sublistaR1(comparadorPaisCategoria, videoComparar);
+		
+		ArregloDinamico<YoutubeVideo> respuesta= new ArregloDinamico<YoutubeVideo>(numero);
+		for(int i=0; i<numero;i++)
+		{
+			respuesta.addLast(answer.getElement(i));
+		}
+
+		return answer;
+		
+	}
+	
+	public String diasTrendingPais(String pPais)
+	{
+		YoutubeVideo.ComparadorPais comparador = new YoutubeVideo.ComparadorPais();
+		String respuesta = null;
+		respuesta= descendenteLikes.mayorContado(comparador);
+		return respuesta;
+	}
+	
+	public YoutubeVideo videoTrendingParaUnPais() 
+	{
+		return descendenteLikes.darMayorContado();
+		
+	}
+	
+	
+	public String diasTrendingParaUnaCategoria(String pId)
+	{
+		YoutubeVideo.ComparadorCategoria comparador = new YoutubeVideo.ComparadorCategoria();
+		String respuesta = null;
+		respuesta= descendenteLikes.mayorContado(comparador);
+		return respuesta;
+	}
+	
+	public YoutubeVideo videoTrendingCategoria()
+	{
+		return descendenteLikes.darMayorContado();
+	}
+	
+	public ArregloDinamico<YoutubeVideo> videosConMasLikesEnUnPaisConUnTag(String pNumero,String pPais, String pTag)
+	{
+		
+		int numero= Integer.parseInt(pNumero);
+		ArregloDinamico<YoutubeVideo> answer =new ArregloDinamico<YoutubeVideo>(100);
+		
+		YoutubeVideo.ComparadorContieneTagYPais comparadorTagPais = new YoutubeVideo.ComparadorContieneTagYPais();
+		
+		YoutubeVideo paisP= new YoutubeVideo ("","" ,"" ,"" ,"" ,"" ,pTag, "","" ,"" ,"" ,"" ,"" ,"" ,"" ,"" , pPais);
+		
+		answer= descendenteViews.sublistaR1(comparadorTagPais, paisP);
+
+		
+		ArregloDinamico<YoutubeVideo> respuesta= new ArregloDinamico<YoutubeVideo>(numero);
+		for(int i=0; i<numero;i++)
+		{
+			respuesta.addLast(answer.getElement(i));
+		}
+
+		return answer;
+	}
+	
+	
 	public void cargarCategorias() throws Exception
 	{
-
+			
+			
+			
 		final Reader lector = new InputStreamReader (new FileInputStream(new File("./data/caterory_id.csv")),"UTF-8");
 		final CSVParser parser = new CSVParser(lector, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
 		
@@ -134,6 +243,7 @@ public class Modelo
 			{
 				
 				String id = record.get("video_id"); 
+	
 				Categoria nueva = new Categoria(id);
 				categorias.addLast(nueva); 
 			}

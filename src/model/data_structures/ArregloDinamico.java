@@ -25,6 +25,8 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 	 */
 	private T[] elementos;
 
+	
+	private T mayorContado;
 	/**
 	 * Construir un arreglo con la capacidad maxima inicial.
 	 * @param max Capacidad maxima inicial
@@ -38,7 +40,11 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 	}
 
 
-
+	public T darMayorContado()
+	{
+		return mayorContado;
+	}
+	
 	public void addLast( T dato )
 	{
 		if ( tamanoAct == tamanoMax )
@@ -390,7 +396,75 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 
 	}
 
+	/**
+	 * Crea una sublista con todos los elementos que sean "iguales" al elemento recibido parametro
+	 * @param comparador que revisa si el elemento actual contiene los atributos deseados del elemento recibido por parametro
+	 * @param elemento con los elementos con los que se quiere hacer la sublista
+	 * @return la sublista con todos los elementos que contienen los elementos deseados, que estan incluidos en el elemento recibido por parametro. 
+	 */
 
+	public ArregloDinamico<T> sublistaR1(Comparator<T> comparador, T elemento)
+	{
+		ArregloDinamico<T> resp = new ArregloDinamico<T>(3800);
+		for(int i = 0; i<tamanoAct;i++)
+		{
+			int comparacion = comparador.compare(elementos[i], elemento);
+			if(comparacion==0)
+			{
+				T act = elementos[i];
+				resp.addLast(act);
+			}
+		}
+		
+		return resp;
+	}
+
+	
+	
+	/**
+	 * Retorna el elemento con mas ocurrencias en una lista ordenada y la cantidad de veces que aparece en la lista
+	 * @param comparador que se usa para contar si un elemento cuenta como repetido o no
+	 * @return el toString() del elemento con mas ocurrencias unido a la cantidad de veces que aparece en la lista usando "///". Si el tamanoAct del arreglo es 0 retorna un mensaje vacio
+	 */
+	public String mayorContado(Comparator<T> comparador)
+	{
+		String respuesta ="";
+		if(tamanoAct != 0)
+		{
+			T elementoAct = elementos[0];
+			T elementoMayor = elementoAct;
+			int cantAct = 1;
+			int cantMayor = cantAct;
+			for(int i = 1; i<tamanoAct; i++)
+			{
+				if(comparador.compare(elementoAct,elementos[i])==0)
+				{
+					cantAct++;
+				}
+				else
+				{
+					if(cantAct>cantMayor)
+					{
+						cantMayor = cantAct;
+						elementoMayor = elementoAct;
+					}
+					cantAct = 1;
+					elementoAct = elementos[i];
+				}
+			}
+			if(cantAct>cantMayor)
+			{
+				cantMayor = cantAct;
+				elementoMayor = elementoAct;
+			}
+			respuesta = String.valueOf(cantMayor);
+			mayorContado=elementoMayor;
+		}
+		return respuesta;
+	}
+	
+	
+	
 
 	@Override
 	public void changeInfo(int pos, T elemento) 
@@ -429,7 +503,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 	}
 	
 
-	@Override
+
 	public ILista<T> subList(int posi, int numElementos) 
 	{
 		ILista<T> respuesta=null;
@@ -454,67 +528,6 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 		return respuesta;
 	}
 
-	/**
-	 * Crea una sublista con todos los elementos que sean "iguales" al elemento recibido parametro
-	 * @param comparador que revisa si el elemento actual contiene los atributos deseados del elemento recibido por parametro
-	 * @param elemento con los elementos con los que se quiere hacer la sublista
-	 * @return la sublista con todos los elementos que contienen los elementos deseados, que estan incluidos en el elemento recibido por parametro. 
-	 */
-	public ArregloDinamico<T> sublistaR1(Comparator<T> comparador, T elemento)
-	{
-		ArregloDinamico<T> resp = new ArregloDinamico<T>(50000);
-		for(int i = 0; i<tamanoAct;i++)
-		{
-			int comparacion = comparador.compare(elementos[i], elemento);
-			if(comparacion==0)
-			{
-				T act = elementos[i];
-				resp.addLast(act);
-			}
-		}
-		
-		return resp;
-	}
-
-	/**
-	 * Retorna el elemento con mas ocurrencias en una lista ordenada y la cantidad de veces que aparece en la lista
-	 * @param comparador que se usa para contar si un elemento cuenta como repetido o no
-	 * @return el toString() del elemento con mas ocurrencias unido a la cantidad de veces que aparece en la lista usando "///". Si el tamanoAct del arreglo es 0 retorna un mensaje vacio
-	 */
-	public String mayorContado(Comparator<T> comparador)
-	{
-		String respuesta ="";
-		if(tamanoAct != 0)
-		{
-			T elementoAct = elementos[0];
-			T elementoMayor = elementoAct;
-			int cantAct = 1;
-			int cantMayor = cantAct;
-			for(int i = 1; i<tamanoAct; i++)
-			{
-				if(comparador.compare(elementoAct,elementos[i])==0)
-				{
-					cantAct++;
-				}
-				else
-				{
-					if(cantAct>cantMayor)
-					{
-						cantMayor = cantAct;
-						elementoMayor = elementoAct;
-					}
-					cantAct = 1;
-					elementoAct = elementos[i];
-				}
-			}
-			if(cantAct>cantMayor)
-			{
-				cantMayor = cantAct;
-				elementoMayor = elementoAct;
-			}
-			respuesta = elementoMayor.toString()+"///"+cantMayor;
-		}
-		return respuesta;
-	}
+	
 
 }

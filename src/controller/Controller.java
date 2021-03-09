@@ -39,307 +39,104 @@ public class Controller {
 		ILista<YoutubeVideo> sub = null;
 
 		while( !fin ){
+
+
 			view.printMenu();
+			modelo=new Modelo();
+			modelo = new Modelo(2);
 
-			int option = lector.nextInt();
-			switch(option)
+			int tamanho= modelo.darTamano();	
+			YoutubeVideo primero=modelo.getFirst();
+
+			view.printMessage("El número de videos subidos es: "+ tamanho);
+			view.printMessage("");
+			view.printMessage("La informacion del primer video es: ");
+			view.printMessage("Titulo: "+ primero.darTitulo()+ "Canal: "+ primero.darCanal()+"Dia que fue trending: "+ primero.darTrending()+"Pais: "+primero.darPais()+"Numero de views: "+primero.darViews()+"Numero de likes"+ primero.darLikes()+ "Numero de dislikes: " primero.darDislikes()); 
+			view.printMessage("");
+			view.printMessage("La lista de las categorias cargadas es:");
+			for (int i=0; i<modelo.darNumeroDeCategorias();i++)
 			{
+				view.printMessage(modelo.darCategorias().getElement(i).darId());
+			}
 
+			view.printMenu2();
+
+			int opcion = lector.nextInt();
+			switch (opcion)
+			{
 			case 1:
-				view.printMessage("Realiza carga de datos de los videos a una lista encadenada\n");
-				modelo = new Modelo(1);
-				view.printMessage("El total de videos cargado en la lista encadenada es: " +modelo.darTamano());
-
-				view.printMenu2();
-				int opcion2 = lector.nextInt();
-				if(opcion2>0)
+				String opcion1= lector.nextLine();
+				String[] retornado = opcion1.split(",");
+				view.printMessage("Se desea conocer cuales son los " + retornado[0] + "viedeos con mas views que son tendencia en el pais"+ retornado[1]+ "en la categoria numero "+ retornado[2]);
+				ILista<YoutubeVideo> lista1 =modelo.videosConMasViewsEnTendenciaDeUnPaisDadaUnaCategoria(retornado[0], retornado[2], retornado[2]);
+				view.printMessage("Los videos son: ");
+				for(int i=0;i<Integer.parseInt(retornado[0]); i++)
 				{
-					view.printMessage("Se obtiene la muestra de videos de la lista cargada del tamaño de :"+ opcion2);
-					sub = modelo.sublista(opcion2);
-					int respuesta2= sub.size();
-					if(opcion2<sub.size())
-					{
-						respuesta2=opcion2;
-					}
-					view.printMessage("El número de videos que contiene la muestra es: "+ respuesta2);
+					view.printMessage("   La fecha trending es: "+ lista1.getElement(i).darTrending());
+					view.printMessage("   El titulo es: "+lista1.getElement(i).darTitulo());
+					view.printMessage("   El canal es: " + lista1.getElement(i).darCanal());
+					view.printMessage("   La fecha de publicacion es: " + lista1.getElement(i).darPublishTime());
+					view.printMessage("   El numero de views es: "+ lista1.getElement(i).darViews());
+					view.printMessage("   El numero de likes es: "+ lista1.getElement(i).darLikes());
+					view.printMessage("   El numeor de dislikes es:" + lista1.getElement(i).darDislikes());
 				}
-
-				else if (opcion2 ==0)
-				{
-					view.printMessage("-------------------- \n Hasta pronto !! \n--------------------"); 
-					lector.close();
-					fin = true;
-					break;	
-				}
-
-				else
-				{
-					view.printMessage("--------- \n Opcion Invalida !! \n---------");
-					break;
-				}
-
-
-				view.printMenu3();
-				int opcion3 = lector.nextInt();
-				switch (opcion3)
-				{
-				case 1:
-					long start_time = System.currentTimeMillis();
-					ordenador.ordenarInsecion(sub, criterio, true);
-					long stop_time = System.currentTimeMillis();
-					view.printMessage("Tiempo que tomo el proceso de carga en milisegundos del algoritmo de ordenamiento Insertion sort es: "+ (start_time-stop_time)*-1);
-					view.printMessage("Informacion basica de los primeros 10 videos:");
-					int i=1;
-					while (i<=10&& i<=sub.size())
-					{	
-						view.printMessage("Titulo: "+ sub.getElement(i).darTitulo() +". Numero Likes: "+sub.getElement(i).darLikes());
-						i++;
-					}
-					view.printMessage("Informacion basica de los ultimos 10 videos:");
-					int j=sub.size();
-
-					while (j>(sub.size()-10)&&sub.getElement(j)!=null)
-					{
-						view.printMessage("Titulo: "+ sub.getElement(j).darTitulo() +". Numero Likes: "+sub.getElement(j).darLikes());
-						j--;
-					}
-
-					break;
-				case 2:
-					long start_time2 = System.currentTimeMillis();
-					ordenador.ordenarShell(sub, criterio, true);
-					long stop_time2 = System.currentTimeMillis();
-					view.printMessage("Tiempo que tomo el proceso de carga en milisegundos del algoritmo de ordenamiento es Shell sort: "+ (start_time2-stop_time2)*-1);
-					view.printMessage("Informacion basica de los primeros 10 videos:");
-					int k=1;
-					while (k<=10&& k<=sub.size())
-					{	
-						view.printMessage("Titulo: "+ sub.getElement(k).darTitulo() +". Numero Likes: "+sub.getElement(k).darLikes());
-						k++;
-					}
-					view.printMessage("Informacion basica de los ultimos 10 videos:");
-					int l=sub.size();
-
-					while (l>(sub.size()-10)&&sub.getElement(l)!=null)
-					{
-						view.printMessage("Titulo: "+ sub.getElement(l).darTitulo() +". Numero Likes: "+sub.getElement(l).darLikes());
-						l--;
-					}
-
-					break;
-				case 3:
-					long start_time3 = System.currentTimeMillis();
-					ordenador.ordenarMerge(sub, criterio, true);
-					long stop_time3 = System.currentTimeMillis();
-					view.printMessage("Tiempo que tomo el proceso de carga en milisegundos del algoritmo de ordenamiento es Merge sort: "+ (start_time3-stop_time3)*-1);
-					view.printMessage("Informacion basica de los primeros 10 videos:");
-					int f=1;
-					while (f<=10&& f<=sub.size())
-					{	
-						view.printMessage("Titulo: "+ sub.getElement(f).darTitulo() +". Numero Likes: "+sub.getElement(f).darLikes());
-						f++;
-					}
-					view.printMessage("Informacion basica de los ultimos 10 videos:");
-					int g=sub.size();
-					if(sub.size()>=20) {g=sub.size()-10;}
-					else {g=11;}
-		
-					for(int y =g;y<=sub.size();y++)
-					{
-						view.printMessage("Titulo: "+ sub.getElement(y).darTitulo() +". Numero Likes: "+sub.getElement(y).darLikes());
-					}
-
-					break;
-
-				case 4:
-					long start_time4 = System.currentTimeMillis();
-					ordenador.ordenarQuickSort(sub, criterio, true);
-					long stop_time4 = System.currentTimeMillis();
-					view.printMessage("Tiempo que tomo el proceso de carga en milisegundos del algoritmo de ordenamiento es Quick sort: "+ (start_time4-stop_time4)*-1);
-					view.printMessage("Informacion basica de los primeros 10 videos:");
-					int m=1;
-					while (m<=10&& m<=sub.size())
-					{	
-						view.printMessage("Titulo: "+ sub.getElement(m).darTitulo() +". Numero Likes: "+sub.getElement(m).darLikes());
-						m++;
-					}
-					view.printMessage("Informacion basica de los ultimos 10 videos:");
-					int n=sub.size();
-
-					while (n>(sub.size()-10)&&sub.getElement(n)!=null)
-					{
-						view.printMessage("Titulo: "+ sub.getElement(n).darTitulo() +". Numero Likes: "+sub.getElement(n).darLikes());
-						n--;
-					}
-
-					break;
-				case 5:
-					view.printMessage("-------------------- \n Hasta pronto !! \n--------------------"); 
-					lector.close();
-					fin = true;
-					break;
-					
-				default: 
-					view.printMessage("--------- \n Opcion Invalida !! \n---------");
-					break;
-
-
-				}
-
 
 			case 2:
+				String opcion2= lector.nextLine().trim();
+				view.printMessage("Se quiere conocer cual es el video que mas dias ha sido trending para el pais: " + opcion2);
+				String cantidad= modelo.diasTrendingPais(opcion2);
+				YoutubeVideo video2= modelo.videoTrendingParaUnPais();
+			
+				
+				view.printMessage("El video es: " );
+				view.printMessage("   Titulo: "+ video2.darTitulo());
+				view.printMessage("   Canal: " + video2.darCanal());
+				view.printMessage("   Pais: " + video2.darPais());
+				view.printMessage("   El numero de dias que fue trending es: "+ cantidad );
 
-				view.printMessage("Realiza carga de datos de los videos a una arreglo dinamico\n");
-				modelo = new Modelo(2);
-				view.printMessage("El total de videos cargado en el arreglo dinamico es: " +modelo.darTamano());
+			case 3:
+				String opcion3=lector.nextLine().trim();
+				view.printMessage("Se quiere conocer cual es el video que mas dias ha sido trending para la categoria: " + opcion3);
+				String video3= modelo.diasTrendingPais(opcion3);
+				YoutubeVideo videos3 =modelo.videoTrendingCategoria();
+				view.printMessage("El video es: ");
+				view.printMessage("   Titulo: "+ videos3.darTitulo());
+				view.printMessage("   Canal: " +videos3.darCanal());
+				view.printMessage("   Id de categoria: " + videos3.darCategoria());
+				view.printMessage("   El numero de dias que fue trending es: "+ video3);
 
-				view.printMenu2();
-				int opcion_2 = lector.nextInt();
-				if(opcion_2>0)
+			case 4:
+				String opcion4= lector.nextLine();
+				String[] retornado1 = opcion4.split(",");
+				view.printMessage("Se desea conocer cuales son los " + retornado1[0] + "videos con mas likes en el pais"+ retornado1[1]+ ", con el tag"+ retornado1[2]);
+				ILista<YoutubeVideo> lista4 =modelo.videosConMasLikesEnUnPaisConUnTag(retornado[0], retornado[2], retornado[2]);
+				view.printMessage("Los videos son: ");
+				for(int i=0;i<Integer.parseInt(retornado1[0]); i++)
 				{
-					view.printMessage("Se obtiene la muestra de videos de la lista cargada del tamaño"+ opcion_2);
-					sub = modelo.sublista(opcion_2);
-					int respuesta2= modelo.darTamano();
-					if(opcion_2<sub.size())
-					{
-						respuesta2=opcion_2;
-					}
-					view.printMessage("El número de videos que contiene la muestra es: "+ respuesta2);
+					view.printMessage("   El titulo es: "+ lista4.getElement(i).darTitulo());
+					view.printMessage("   El canal es: " + lista4.getElement(i).darCanal());
+					view.printMessage("   La fecha de publicacion es: " + lista4.getElement(i).darPublishTime());
+					view.printMessage("   El numero de views es: "+ lista4.getElement(i).darViews() );
+					view.printMessage("   El numero de likes es: "+ lista4.getElement(i).darLikes());
+					view.printMessage("   El numeor de dislikes es:" + lista4.getElement(i).darDislikes());
+					view.printMessage("   Los tags del video son: " + lista4.getElement(i).darTags());
 				}
 
-				else if (opcion_2 ==0)
-				{
-					view.printMessage("-------------------- \n Hasta pronto !! \n--------------------"); 
-					lector.close();
-					fin = true;
-					break;	
-				}
 
-				else
-				{
-					view.printMessage("--------- \n Opcion Invalida !! \n---------");
-					break;
-				}
-
-
-				view.printMenu3();
-				int opcion_3 = lector.nextInt();
-
-				switch (opcion_3)
-				{
-				case 1:
-					long start_time = System.currentTimeMillis();
-					ordenador.ordenarInsecion(sub, criterio, true);
-					long stop_time = System.currentTimeMillis();
-					view.printMessage("Tiempo que tomo el proceso de carga en milisegundos del algoritmo de ordenamiento Insertion sort es: "+ (start_time-stop_time)*-1);
-					view.printMessage("Informacion basica de los primeros 10 videos:");
-					int i=1;
-					while (i<=10&& i<=sub.size())
-					{	
-						view.printMessage("Titulo: "+ sub.getElement(i).darTitulo() +". Numero Likes: "+sub.getElement(i).darLikes());
-						i++;
-					}
-					view.printMessage("Informacion basica de los ultimos 10 videos:");
-					int j=sub.size();
-
-					while (j>(sub.size()-10)&&sub.getElement(j)!=null)
-					{
-						view.printMessage("Titulo: "+ sub.getElement(j).darTitulo() +". Numero Likes: "+sub.getElement(j).darLikes());
-						j--;
-					}
-
-					break;
-				case 2:
-					long start_time2 = System.currentTimeMillis();
-					ordenador.ordenarShell(sub, criterio, true);
-					long stop_time2 = System.currentTimeMillis();
-					view.printMessage("Tiempo que tomo el proceso de carga en milisegundos del algoritmo de ordenamiento es Shell sort: "+ (start_time2-stop_time2)*-1);
-					view.printMessage("Informacion basica de los primeros 10 videos:");
-					int k=1;
-					while (k<=10&& k<=sub.size())
-					{	
-						view.printMessage("Titulo: "+ sub.getElement(k).darTitulo() +". Numero Likes: "+sub.getElement(k).darLikes());
-						k++;
-					}
-					view.printMessage("Informacion basica de los ultimos 10 videos:");
-					int l=sub.size();
-
-					while (l>(sub.size()-10)&&sub.getElement(l)!=null)
-					{
-						view.printMessage("Titulo: "+ sub.getElement(l).darTitulo() +". Numero Likes: "+sub.getElement(l).darLikes());
-						l--;
-					}
-
-					break;
-				case 3:
-					long start_time3 = System.currentTimeMillis();
-					ordenador.ordenarMerge(sub, criterio, true);
-					long stop_time3 = System.currentTimeMillis();
-					view.printMessage("Tiempo que tomo el proceso de carga en milisegundos del algoritmo de ordenamiento es Merge sort: "+ (start_time3-stop_time3)*-1);
-					view.printMessage("Informacion basica de los primeros 10 videos:");
-					int f=1;
-					while (f<=10&& f<=sub.size())
-					{	
-						view.printMessage("Titulo: "+ sub.getElement(f).darTitulo() +". Numero Likes: "+sub.getElement(f).darLikes());
-						f++;
-					}
-					view.printMessage("Informacion basica de los ultimos 10 videos:");
-					int g=sub.size();
-
-					while (g>(sub.size()-10)&&sub.getElement(g)!=null)
-					{
-						view.printMessage("Titulo: "+ sub.getElement(g).darTitulo() +". Numero Likes: "+sub.getElement(g).darLikes());
-						g--;
-					}
-
-					break;
-
-				case 4:
-					long start_time4 = System.currentTimeMillis();
-					ordenador.ordenarQuickSort(sub, criterio, true);
-					long stop_time4 = System.currentTimeMillis();
-					view.printMessage("Tiempo que tomo el proceso de carga en milisegundos del algoritmo de ordenamiento es Quick sort: "+ (start_time4-stop_time4)*-1);
-					view.printMessage("Informacion basica de los primeros 10 videos:");
-					int m=1;
-					while (m<=10&& m<=sub.size())
-					{	
-						view.printMessage("Titulo: "+ sub.getElement(m).darTitulo() +". Numero Likes: "+sub.getElement(m).darLikes());
-						m++;
-					}
-					view.printMessage("Informacion basica de los ultimos 10 videos:");
-					int n=sub.size();
-
-					while (n>(sub.size()-10)&&sub.getElement(n)!=null)
-					{
-						view.printMessage("Titulo: "+ sub.getElement(n).darTitulo() +". Numero Likes: "+sub.getElement(n).darLikes());
-						n--;
-					}
-
-					break;
-				case 5:
-					view.printMessage("-------------------- \n Hasta pronto !! \n--------------------"); 
-					lector.close();
-					fin = true;
-					break;
-					
-				default: 
-					view.printMessage("--------- \n Opcion Invalida !! \n---------");
-					break;
-
-				}
-
-			case 3: 
+			case 0:
 				view.printMessage("-------------------- \n Hasta pronto !! \n--------------------"); 
 				lector.close();
 				fin = true;
-				break;	
+				break;
 
 			default: 
 				view.printMessage("--------- \n Opcion Invalida !! \n---------");
 				break;
-
-
 			}
+
+
 		}
+
+
 	}
 }

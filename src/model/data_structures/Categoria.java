@@ -4,6 +4,7 @@ package model.data_structures;
 public class Categoria implements Comparable<Categoria> 
 {
 	private String id;
+	
 
 
 	public Categoria(String pId)
@@ -16,6 +17,7 @@ public class Categoria implements Comparable<Categoria>
 	{
 		return id;
 	}
+	
 
 
 	@Override

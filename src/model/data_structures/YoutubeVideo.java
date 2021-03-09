@@ -115,7 +115,7 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 	 * @author Juanse
 	 *
 	 */
-	public static class ComparadorPaisyCategoria implements Comparator<YoutubeVideo>
+	public static class ComparadorPaisYCategoria implements Comparator<YoutubeVideo>
 	{
 		/**
 		 * Verifica si los dos videos son del mismo pais y categoria
@@ -133,8 +133,68 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 			return 1;	
 	 	} 		
 	}	
+	/**
+	 * 
+	 * Clase comparador por views
+	 *
+	 */
 	
+	public static class ComparadorXViews implements Comparaator <YoutubeVideo>
+	{
+		/**
+		 * Retorna cual de los dos videos tiene mas vies. 
+		 * @return <0 si el o1 tiene menos likes que el o2. La repsuesta es mayor que 0 si el o1 tiene mas views que o2. 0 si los dos videos tienen los mismos views
+		 */
+		public int compare(YoutubeVideo o1, YoutubeVideo o2)
+	 	{
+			int likes1 = Integer.parseInt(o1.darViews());
+			int likes2 = Integer.parseInt(o2.darViews());
+			return likes1-likes2;
+	 	}
+	}
 	
+	public static class ComparadorPais implements Comparator<YoutubeVideo>
+	{
+		/**
+		 * Verifica si los dos videos son del mismo pais.
+		 * @retun 0 si los dos videos son del mismo pais. Cualquier otro numero de lo contrario
+		 */
+		public int compare (YoutubeVideo o1, YoutubeVideo o2)
+		{
+			return o1.darPais().compareToIgnoreCase(o2.darPais());
+		}
+	}
+	
+	public static class ComparadorNombre implements Comparator<YoutubeVideo>
+	{
+		/**
+		 * Verifica si los dos videos son del mismo pais.
+		 * @retun 0 si los dos videos son del mismo pais. Cualquier otro numero de lo contrario
+		 */
+		public int compare (YoutubeVideo o1, YoutubeVideo o2)
+		{
+			return o1.darTitulo().compareToIgnoreCase(o1.darTitulo());
+		}
+	}
+	
+	public static class ComparadorContieneTagYPais implements Comparator<YoutubeVideo>
+	{
+		/**
+		 * Verifica si el video actual (izquierda) contiene el tag del video a comparar (derecha)
+		 * @return 0 si el video actual (izquierda) contiene el tag del video a comparar (derecha). 1 de lo cotrario
+		 */
+		public int compare (YoutubeVideo actual, YoutubeVideo aComparar)
+		{
+			int rta = 1;
+			boolean req1 = actual.darTags().contains(aComparar.darTags());
+			boolean req2 = actual.darPais().equalsIgnoreCase(aComparar.darPais());
+			if(req1 == true && req2 == true)
+			{
+				rta = 0;
+			}
+			return rta;
+		}
+	}
 	/**
 	 * Clase con comparador de categoria
 	 * @author Juanse
