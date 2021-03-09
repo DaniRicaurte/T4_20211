@@ -33,21 +33,18 @@ public class View
 			System.out.println("- Numero de videos (debe de ser mayor a 0)");
 			System.out.println("- Pais de los videos");
 			System.out.println("- Categoria de los videos");
-			System.out.println("0. Exit");
 					
 		}
 	    
 	    public void printMenu1_2()
 	    {
 	    	System.out.println("Escriba el nombre del pais, y luego oprima enter");
-			System.out.println("0. Exit");
 			
 	    }
 	    
 	    public void printMenu1_3()
 	    {
 	    	System.out.println("Escriba el nombre de la categoria, y luego oprima enter");
-			System.out.println("0. Exit");
 			
 	    }
 
@@ -57,7 +54,6 @@ public class View
 	    	System.out.println("- Numero de videos (debe de ser mayor a 0)");
 			System.out.println("- Pais de los videos");
 			System.out.println("- Un tag de los videos");
-			System.out.println("0. Exit");
 	    }
 	    
 

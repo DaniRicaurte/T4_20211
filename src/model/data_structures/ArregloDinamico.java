@@ -405,7 +405,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 
 	public ArregloDinamico<T> sublistaR1(Comparator<T> comparador, T elemento)
 	{
-		ArregloDinamico<T> resp = new ArregloDinamico<T>(3800);
+		ArregloDinamico<T> resp = new ArregloDinamico<T>(380000);
 		for(int i = 0; i<tamanoAct;i++)
 		{
 			int comparacion = comparador.compare(elementos[i], elemento);

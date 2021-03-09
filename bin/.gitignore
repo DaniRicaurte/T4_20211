@@ -1,2 +1,8 @@
-/model/
+/.DS_Store
+/README.TXT
 /controller/
+/main/
+/model/
+/test/
+/utils/
+/view/

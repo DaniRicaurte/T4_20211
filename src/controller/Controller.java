@@ -66,12 +66,13 @@ public class Controller {
 			view.printMessage("El número de videos subidos es: "+ tamanho);
 			view.printMessage("");
 			view.printMessage("La informacion del primer video es: ");
-			view.printMessage("Titulo: "+ primero.darTitulo()+ "Canal: "+ primero.darCanal()+"Dia que fue trending: "+ primero.darTrending()+"Pais: "+primero.darPais()+"Numero de views: "+primero.darViews()+"Numero de likes"+ primero.darLikes()+ "Numero de dislikes: "+ primero.darDislikes()); 
+			view.printMessage("Titulo: "+ primero.darTitulo()+ "Canal: "+ primero.darCanal()+"Dia que fue trending: "+ primero.darTrending()+"Pais: "+primero.darPais()+"Numero de views: "+primero.darViews()+"Numero de likes: "+ primero.darLikes()+ "Numero de dislikes: "+ primero.darDislikes()); 
 			view.printMessage("");
 			view.printMessage("La lista de las categorias cargadas es:");
-			for (int i=0; i<modelo.darNumeroDeCategorias();i++)
+			for (int i=1; i<modelo.darNumeroDeCategorias();i++)
 			{
-				view.printMessage(modelo.darCategorias().getElement(i).darId());
+				String buscar =modelo.darCategorias().getElement(i).darId();
+				view.printMessage(buscar);
 			}
 
 			view.printMenu2();
@@ -80,9 +81,10 @@ public class Controller {
 			switch (opcion)
 			{
 			case 1:
-				String opcion1= lector.nextLine();
+				view.printMenu1_1();
+				String opcion1= lector.next();
 				String[] retornado = opcion1.split(",");
-				view.printMessage("Se desea conocer cuales son los " + retornado[0] + "viedeos con mas views que son tendencia en el pais"+ retornado[1]+ "en la categoria numero "+ retornado[2]);
+				view.printMessage("Se desea conocer cuales son los " + retornado[0] + "videos con mas views que son tendencia en el pais "+ retornado[1]+ " en la categoria numero "+ retornado[2]);
 				YoutubeVideo videoComparar= new YoutubeVideo (retornado[2],"" ,"" ,"" ,"" ,"" ,"" , "","" ,"" ,"" ,"" ,"" ,"" ,"" ,"" , retornado[1]);
 				Comparator<YoutubeVideo> comparadorR1 = new YoutubeVideo.ComparadorPaisYCategoria();
 				ArregloDinamico<YoutubeVideo> rta = lista1.sublistaR1(comparadorR1,videoComparar);
@@ -95,10 +97,11 @@ public class Controller {
 					view.printMessage("   La fecha de publicacion es: " + rta.getElement(i).darPublishTime());
 					view.printMessage("   El numero de views es: "+ rta.getElement(i).darViews());
 					view.printMessage("   El numero de likes es: "+ rta.getElement(i).darLikes());
-					view.printMessage("   El numeor de dislikes es:" + rta.getElement(i).darDislikes());
+					view.printMessage("   El numero de dislikes es:" + rta.getElement(i).darDislikes());
 				}
 
 			case 2:
+				view.printMenu1_2();
 				String opcion2= lector.nextLine().trim();
 				view.printMessage("Se quiere conocer cual es el video que mas dias ha sido trending para el pais: " + opcion2);
 				YoutubeVideo aComparar = new YoutubeVideo("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", opcion2);
@@ -117,6 +120,7 @@ public class Controller {
 				view.printMessage("   El numero de dias que fue trending es: "+ partes1[1] );
 
 			case 3:
+				view.printMenu1_3();
 				String opcion3=lector.nextLine().trim();
 				view.printMessage("Se quiere conocer cual es el video que mas dias ha sido trending para la categoria: " + opcion3);
 				YoutubeVideo ejemplo = new YoutubeVideo(opcion3, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
@@ -135,6 +139,7 @@ public class Controller {
 				view.printMessage("   El numero de dias que fue trending es: "+ partesReq1[1]);
 
 			case 4:
+				view.printMenu1_4();
 				String opcion4= lector.nextLine();
 				String[] retornado1 = opcion4.split(",");
 				view.printMessage("Se desea conocer cuales son los " + retornado1[0] + "videos con mas likes en el pais"+ retornado1[1]+ ", con el tag"+ retornado1[2]);

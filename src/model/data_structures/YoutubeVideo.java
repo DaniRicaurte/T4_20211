@@ -123,13 +123,18 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 		 */
 		public int compare(YoutubeVideo o1, YoutubeVideo o2)
 	 	{
+			
 	 		int rta = 1;
 	 		int condicion1 = o1.darPais().compareToIgnoreCase(o2.darPais());
+	 		System.out.println(""+ condicion1);
 	 		int condicion2 = o1.darCategoria()-o2.darCategoria();
+	 		System.out.println("-"+condicion2);
 			if(condicion1 == 0 && condicion2 == 0 )
 			{
 				rta = 0;
+			
 			}
+			
 			return 1;	
 	 	} 		
 	}	
@@ -250,7 +255,7 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 	
 	public String toString()
 	{
-		return title+":::"+channel+":::"+pais+":::"+id;
+		return title+":::"+channel+":::"+published+":::"+views+":::"+likes+":::"+dislikes+tags+":::"+id;
 	}
 	
 }
