@@ -3,6 +3,7 @@ package controller;
 import java.util.Comparator;
 import java.util.Scanner;
 
+import model.data_structures.ArregloDinamico;
 import model.data_structures.ILista;
 import model.data_structures.YoutubeVideo;
 import model.logic.Cronometro;
@@ -36,22 +37,36 @@ public class Controller {
 		String respuesta = "";
 		Ordenamiento<YoutubeVideo> ordenador = new Ordenamiento<YoutubeVideo>();
 		Comparator<YoutubeVideo> criterio = new YoutubeVideo.ComparadorXLikes();
+		Comparator<YoutubeVideo> criterio2 = new YoutubeVideo.ComparadorXViews();
+		Comparator<YoutubeVideo> criterio3 = new YoutubeVideo.ComparadorNombre();
 		ILista<YoutubeVideo> sub = null;
+		ArregloDinamico<YoutubeVideo> lista0 = null;
+		ArregloDinamico<YoutubeVideo> lista1= null;
+		ArregloDinamico<YoutubeVideo> lista2 = null;
 
 		while( !fin ){
 
 
 			view.printMenu();
 			modelo=new Modelo();
-			modelo = new Modelo(2);
+			lista0 = modelo.darDatos();
+			view.printMessage("cargo l0");
+			lista1 = modelo.darDatos();
+			view.printMessage("cargo l1");
+			lista2 = modelo.darDatos();
+			view.printMessage("Cargo l2");
+			ordenador.ordenarMerge(lista1, criterio2, false);
+			ordenador.ordenarMerge(lista2, criterio, false);
+			ordenador.ordenarMerge(lista0, criterio3, true);
+			
 
 			int tamanho= modelo.darTamano();	
-			YoutubeVideo primero=modelo.getFirst();
+			YoutubeVideo primero = modelo.getFirst();
 
 			view.printMessage("El número de videos subidos es: "+ tamanho);
 			view.printMessage("");
 			view.printMessage("La informacion del primer video es: ");
-			view.printMessage("Titulo: "+ primero.darTitulo()+ "Canal: "+ primero.darCanal()+"Dia que fue trending: "+ primero.darTrending()+"Pais: "+primero.darPais()+"Numero de views: "+primero.darViews()+"Numero de likes"+ primero.darLikes()+ "Numero de dislikes: " primero.darDislikes()); 
+			view.printMessage("Titulo: "+ primero.darTitulo()+ "Canal: "+ primero.darCanal()+"Dia que fue trending: "+ primero.darTrending()+"Pais: "+primero.darPais()+"Numero de views: "+primero.darViews()+"Numero de likes"+ primero.darLikes()+ "Numero de dislikes: "+ primero.darDislikes()); 
 			view.printMessage("");
 			view.printMessage("La lista de las categorias cargadas es:");
 			for (int i=0; i<modelo.darNumeroDeCategorias();i++)
@@ -68,58 +83,74 @@ public class Controller {
 				String opcion1= lector.nextLine();
 				String[] retornado = opcion1.split(",");
 				view.printMessage("Se desea conocer cuales son los " + retornado[0] + "viedeos con mas views que son tendencia en el pais"+ retornado[1]+ "en la categoria numero "+ retornado[2]);
-				ILista<YoutubeVideo> lista1 =modelo.videosConMasViewsEnTendenciaDeUnPaisDadaUnaCategoria(retornado[0], retornado[2], retornado[2]);
+				YoutubeVideo videoComparar= new YoutubeVideo (retornado[2],"" ,"" ,"" ,"" ,"" ,"" , "","" ,"" ,"" ,"" ,"" ,"" ,"" ,"" , retornado[1]);
+				Comparator<YoutubeVideo> comparadorR1 = new YoutubeVideo.ComparadorPaisYCategoria();
+				ArregloDinamico<YoutubeVideo> rta = lista1.sublistaR1(comparadorR1,videoComparar);
 				view.printMessage("Los videos son: ");
 				for(int i=0;i<Integer.parseInt(retornado[0]); i++)
 				{
-					view.printMessage("   La fecha trending es: "+ lista1.getElement(i).darTrending());
-					view.printMessage("   El titulo es: "+lista1.getElement(i).darTitulo());
-					view.printMessage("   El canal es: " + lista1.getElement(i).darCanal());
-					view.printMessage("   La fecha de publicacion es: " + lista1.getElement(i).darPublishTime());
-					view.printMessage("   El numero de views es: "+ lista1.getElement(i).darViews());
-					view.printMessage("   El numero de likes es: "+ lista1.getElement(i).darLikes());
-					view.printMessage("   El numeor de dislikes es:" + lista1.getElement(i).darDislikes());
+					view.printMessage("   La fecha trending es: "+ rta.getElement(i).darTrending());
+					view.printMessage("   El titulo es: "+rta.getElement(i).darTitulo());
+					view.printMessage("   El canal es: " + rta.getElement(i).darCanal());
+					view.printMessage("   La fecha de publicacion es: " + rta.getElement(i).darPublishTime());
+					view.printMessage("   El numero de views es: "+ rta.getElement(i).darViews());
+					view.printMessage("   El numero de likes es: "+ rta.getElement(i).darLikes());
+					view.printMessage("   El numeor de dislikes es:" + rta.getElement(i).darDislikes());
 				}
 
 			case 2:
 				String opcion2= lector.nextLine().trim();
 				view.printMessage("Se quiere conocer cual es el video que mas dias ha sido trending para el pais: " + opcion2);
-				String cantidad= modelo.diasTrendingPais(opcion2);
-				YoutubeVideo video2= modelo.videoTrendingParaUnPais();
-			
-				
+				YoutubeVideo aComparar = new YoutubeVideo("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", opcion2);
+				Comparator<YoutubeVideo> comparadorR2 = new YoutubeVideo.ComparadorPais();
+				ArregloDinamico<YoutubeVideo> listaRta = lista0.sublistaR1(comparadorR2, aComparar);
+				String rtaLarga = listaRta.mayorContado(criterio3);
+				String[] partes1 = rtaLarga.split("///");
+				String[] partes2 = partes1[0].split(":::");
+				String titu = partes2[0];
+				String canal = partes2[1];
+				String pais = partes2[2];
 				view.printMessage("El video es: " );
-				view.printMessage("   Titulo: "+ video2.darTitulo());
-				view.printMessage("   Canal: " + video2.darCanal());
-				view.printMessage("   Pais: " + video2.darPais());
-				view.printMessage("   El numero de dias que fue trending es: "+ cantidad );
+				view.printMessage("   Titulo: "+ titu);
+				view.printMessage("   Canal: " + canal);
+				view.printMessage("   Pais: " + pais);
+				view.printMessage("   El numero de dias que fue trending es: "+ partes1[1] );
 
 			case 3:
 				String opcion3=lector.nextLine().trim();
 				view.printMessage("Se quiere conocer cual es el video que mas dias ha sido trending para la categoria: " + opcion3);
-				String video3= modelo.diasTrendingPais(opcion3);
-				YoutubeVideo videos3 =modelo.videoTrendingCategoria();
+				YoutubeVideo ejemplo = new YoutubeVideo(opcion3, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+				Comparator<YoutubeVideo> comparadorR3 = new YoutubeVideo.ComparadorCategoria();
+				ArregloDinamico<YoutubeVideo> listaRta3 = lista0.sublistaR1(comparadorR3, ejemplo);
+				String todaRespuesta = listaRta3.mayorContado(criterio3);
+				String[] partesReq1 = todaRespuesta.split("///");
+				String[] partesReq2 = todaRespuesta.split(":::");
+				String title = partesReq2[0];
+				String channel = partesReq2[1];
+				String id = partesReq2[3];
 				view.printMessage("El video es: ");
-				view.printMessage("   Titulo: "+ videos3.darTitulo());
-				view.printMessage("   Canal: " +videos3.darCanal());
-				view.printMessage("   Id de categoria: " + videos3.darCategoria());
-				view.printMessage("   El numero de dias que fue trending es: "+ video3);
+				view.printMessage("   Titulo: "+ title);
+				view.printMessage("   Canal: " +channel);
+				view.printMessage("   Id de categoria: " + id);
+				view.printMessage("   El numero de dias que fue trending es: "+ partesReq1[1]);
 
 			case 4:
 				String opcion4= lector.nextLine();
 				String[] retornado1 = opcion4.split(",");
 				view.printMessage("Se desea conocer cuales son los " + retornado1[0] + "videos con mas likes en el pais"+ retornado1[1]+ ", con el tag"+ retornado1[2]);
-				ILista<YoutubeVideo> lista4 =modelo.videosConMasLikesEnUnPaisConUnTag(retornado[0], retornado[2], retornado[2]);
+				YoutubeVideo example = new YoutubeVideo("", "", "", "", "", "", retornado1[2], "", "", "", "", "", "", "", "", "", retornado1[1]);
+				Comparator<YoutubeVideo> comparadorR4 = new YoutubeVideo.ComparadorContieneTagYPais();
+				ArregloDinamico<YoutubeVideo> listaR4 = lista2.sublistaR1(comparadorR4, example);
 				view.printMessage("Los videos son: ");
 				for(int i=0;i<Integer.parseInt(retornado1[0]); i++)
 				{
-					view.printMessage("   El titulo es: "+ lista4.getElement(i).darTitulo());
-					view.printMessage("   El canal es: " + lista4.getElement(i).darCanal());
-					view.printMessage("   La fecha de publicacion es: " + lista4.getElement(i).darPublishTime());
-					view.printMessage("   El numero de views es: "+ lista4.getElement(i).darViews() );
-					view.printMessage("   El numero de likes es: "+ lista4.getElement(i).darLikes());
-					view.printMessage("   El numeor de dislikes es:" + lista4.getElement(i).darDislikes());
-					view.printMessage("   Los tags del video son: " + lista4.getElement(i).darTags());
+					view.printMessage("   El titulo es: "+ listaR4.getElement(i).darTitulo());
+					view.printMessage("   El canal es: " + listaR4.getElement(i).darCanal());
+					view.printMessage("   La fecha de publicacion es: " + listaR4.getElement(i).darPublishTime());
+					view.printMessage("   El numero de views es: "+ listaR4.getElement(i).darViews() );
+					view.printMessage("   El numero de likes es: "+ listaR4.getElement(i).darLikes());
+					view.printMessage("   El numeor de dislikes es:" + listaR4.getElement(i).darDislikes());
+					view.printMessage("   Los tags del video son: " + listaR4.getElement(i).darTags());
 				}
 
 

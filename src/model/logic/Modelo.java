@@ -17,7 +17,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-import com.sun.tools.classfile.InnerClasses_attribute.Info;
 
 import model.data_structures.ArregloDinamico;
 import model.data_structures.Categoria;
@@ -38,8 +37,8 @@ public class Modelo
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	private ILista<YoutubeVideo> datos;
-	private ILista<Categoria> categorias;
+	private ArregloDinamico<YoutubeVideo> datos;
+	private ArregloDinamico<Categoria> categorias;
 	private ArregloDinamico <YoutubeVideo> descendenteViews;
 	private ArregloDinamico <YoutubeVideo> descendenteLikes;
 	
@@ -47,6 +46,7 @@ public class Modelo
 	public Modelo()
 	{
 		categorias = new ArregloDinamico<Categoria>(50);
+		datos = new ArregloDinamico<YoutubeVideo>(3800);
 		try 
 		{
 			cargarCategorias();
@@ -56,49 +56,20 @@ public class Modelo
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Constructor del modelo del mundo con capacidad predefinida
-	 */
-	public Modelo(int opcion)
-	{
-		if (opcion==1)
-		{
-			datos= new ListaEncadenada<YoutubeVideo>(null) ;
-		}
-		else
-		{
-			Comparator<YoutubeVideo> criterio = new YoutubeVideo.ComparadorNombre();
-			Comparator<YoutubeVideo> criterio1 = (Comparator<YoutubeVideo>) new YoutubeVideo.ComparadorXViews();
-			Comparator<YoutubeVideo> criterio2 = new YoutubeVideo.ComparadorXLikes();
-			
-			Ordenamiento<YoutubeVideo> ordenador = new Ordenamiento<YoutubeVideo>();
-			
-			datos = new ArregloDinamico<YoutubeVideo>(3800);
-			ordenador.ordenarMerge(datos,criterio , true);
-			
-			descendenteViews = new ArregloDinamico<YoutubeVideo>(datos.size());
-			descendenteViews = (ArregloDinamico<YoutubeVideo>) datos;
-			ordenador.ordenarMerge(descendenteViews,criterio1 , false);
-			
-			descendenteLikes = new ArregloDinamico<YoutubeVideo>(datos.size());
-			descendenteLikes= descendenteViews;
-			ordenador.ordenarMerge(descendenteLikes, criterio2, false);
-			
-		}
 		try
 		{
-		cargarDatos();
+			cargarDatos();
 		}
-		
-		catch(Exception e)
+		catch (Exception e)
 		{
-			System.out.println("No se pudieron subir los datos");
+			e.printStackTrace();
 		}
-
 	}
 
+	public ArregloDinamico<YoutubeVideo> darDatos()
+	{
+		return datos;
+	}
 
 	public YoutubeVideo getFirst()
 	{
@@ -160,7 +131,7 @@ public class Modelo
 		int numero= Integer.parseInt(pNumero);
 		ArregloDinamico<YoutubeVideo> answer =new ArregloDinamico<YoutubeVideo>(100);
 		
-		YoutubeVideo.ComparadorPaisYCategoria comparadorPaisCategoria = new YoutubeVideo.ComparadorPaisYCategoria();
+		Comparator<YoutubeVideo> comparadorPaisCategoria = new YoutubeVideo.ComparadorPaisYCategoria();
 		
 		YoutubeVideo videoComparar= new YoutubeVideo (pId,"" ,"" ,"" ,"" ,"" ,"" , "","" ,"" ,"" ,"" ,"" ,"" ,"" ,"" , pais);
 		
@@ -179,7 +150,7 @@ public class Modelo
 	
 	public String diasTrendingPais(String pPais)
 	{
-		YoutubeVideo.ComparadorPais comparador = new YoutubeVideo.ComparadorPais();
+		Comparator<YoutubeVideo> comparador = new YoutubeVideo.ComparadorPais();
 		String respuesta = null;
 		respuesta= descendenteLikes.mayorContado(comparador);
 		return respuesta;
@@ -194,7 +165,7 @@ public class Modelo
 	
 	public String diasTrendingParaUnaCategoria(String pId)
 	{
-		YoutubeVideo.ComparadorCategoria comparador = new YoutubeVideo.ComparadorCategoria();
+		Comparator<YoutubeVideo> comparador = new YoutubeVideo.ComparadorCategoria();
 		String respuesta = null;
 		respuesta= descendenteLikes.mayorContado(comparador);
 		return respuesta;
@@ -211,7 +182,7 @@ public class Modelo
 		int numero= Integer.parseInt(pNumero);
 		ArregloDinamico<YoutubeVideo> answer =new ArregloDinamico<YoutubeVideo>(100);
 		
-		YoutubeVideo.ComparadorContieneTagYPais comparadorTagPais = new YoutubeVideo.ComparadorContieneTagYPais();
+		Comparator<YoutubeVideo> comparadorTagPais = new YoutubeVideo.ComparadorContieneTagYPais();
 		
 		YoutubeVideo paisP= new YoutubeVideo ("","" ,"" ,"" ,"" ,"" ,pTag, "","" ,"" ,"" ,"" ,"" ,"" ,"" ,"" , pPais);
 		
@@ -233,22 +204,20 @@ public class Modelo
 			
 			
 			
-		final Reader lector = new InputStreamReader (new FileInputStream(new File("./data/caterory_id.csv")),"UTF-8");
+		final Reader lector = new InputStreamReader (new FileInputStream(new File("./data/category-id.csv")),"UTF-8");
 		final CSVParser parser = new CSVParser(lector, CSVFormat.EXCEL.withFirstRecordAsHeader().withDelimiter(','));
 		
-
 		try
 		{
 			for(final CSVRecord record : parser)
 			{
 				
-				String id = record.get("video_id"); 
-	
+				String id = record.get("id	name");
 				Categoria nueva = new Categoria(id);
 				categorias.addLast(nueva); 
 			}
 		}
-		catch(Exception e) {System.out.println("algo");}
+		catch(Exception e) {System.out.println(e.getMessage());}
 		finally
 		{
 			lector.close();

@@ -457,7 +457,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 				cantMayor = cantAct;
 				elementoMayor = elementoAct;
 			}
-			respuesta = String.valueOf(cantMayor);
+			respuesta = elementoMayor.toString()+"///"+cantMayor;
 			mayorContado=elementoMayor;
 		}
 		return respuesta;

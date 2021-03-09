@@ -139,7 +139,7 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 	 *
 	 */
 	
-	public static class ComparadorXViews implements Comparaator <YoutubeVideo>
+	public static class ComparadorXViews implements Comparator <YoutubeVideo>
 	{
 		/**
 		 * Retorna cual de los dos videos tiene mas vies. 
@@ -250,7 +250,7 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 	
 	public String toString()
 	{
-		return title+":::"+channel+":::"+published+":::"+views+":::"+likes+":::"+dislikes+tags+":::"+id;
+		return title+":::"+channel+":::"+pais+":::"+id;
 	}
 	
 }
