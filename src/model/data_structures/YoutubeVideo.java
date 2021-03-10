@@ -64,9 +64,9 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 		
 	}
 	
-	public String darLikes()
+	public int darLikes()
 	{
-		return likes;
+		return Integer.parseInt(likes);
 	}
 	
 	public String darTrending()
@@ -104,9 +104,7 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 		 */
 		public int compare(YoutubeVideo video1, YoutubeVideo video2)
 		{
-			int likes1 = Integer.parseInt(video1.darLikes());
-			int likes2 = Integer.parseInt(video2.darLikes());
-			return likes1-likes2;
+			return video1.darLikes() - video2.darLikes();
 		}
 	}
 	
@@ -125,17 +123,15 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 	 	{
 			
 	 		int rta = 1;
-	 		int condicion1 = o1.darPais().compareToIgnoreCase(o2.darPais());
-	 		System.out.println(""+ condicion1);
+	 		int condicion1 = o1.darPais().compareTo(o2.darPais());
 	 		int condicion2 = o1.darCategoria()-o2.darCategoria();
-	 		System.out.println("-"+condicion2);
 			if(condicion1 == 0 && condicion2 == 0 )
 			{
 				rta = 0;
 			
 			}
 			
-			return 1;	
+			return rta;	
 	 	} 		
 	}	
 	/**
@@ -152,9 +148,7 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 		 */
 		public int compare(YoutubeVideo o1, YoutubeVideo o2)
 	 	{
-			int likes1 = Integer.parseInt(o1.darViews());
-			int likes2 = Integer.parseInt(o2.darViews());
-			return likes1-likes2;
+			return o1.darViews()-o2.darViews();
 	 	}
 	}
 	
@@ -178,9 +172,10 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 		 */
 		public int compare (YoutubeVideo o1, YoutubeVideo o2)
 		{
-			return o1.darTitulo().compareToIgnoreCase(o1.darTitulo());
+			return o1.darTitulo().compareTo(o2.darTitulo());
 		}
 	}
+	
 	
 	public static class ComparadorContieneTagYPais implements Comparator<YoutubeVideo>
 	{
@@ -239,9 +234,9 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 	{
 		return published;
 	}
-	public String darViews()
+	public int darViews()
 	{
-		return views;
+		return Integer.parseInt(views);
 	}
 	public String darDislikes()
 	{
@@ -255,7 +250,7 @@ public class YoutubeVideo implements Comparable<YoutubeVideo>
 	
 	public String toString()
 	{
-		return title+":::"+channel+":::"+published+":::"+views+":::"+likes+":::"+dislikes+tags+":::"+id;
+		return title+":::"+channel+":::"+published+":::"+views+":::"+likes+":::"+dislikes+":::"+tags+":::"+id;
 	}
 	
 }

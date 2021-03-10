@@ -44,7 +44,7 @@ public class View
 	    
 	    public void printMenu1_3()
 	    {
-	    	System.out.println("Escriba el nombre de la categoria, y luego oprima enter");
+	    	System.out.println("Escriba el numero de la categoria, y luego oprima enter");
 			
 	    }
 

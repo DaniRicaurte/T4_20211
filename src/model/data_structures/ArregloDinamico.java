@@ -440,6 +440,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 				if(comparador.compare(elementoAct,elementos[i])==0)
 				{
 					cantAct++;
+					
 				}
 				else
 				{
@@ -458,7 +459,6 @@ public class ArregloDinamico<T extends Comparable<T>> implements ILista<T> {
 				elementoMayor = elementoAct;
 			}
 			respuesta = elementoMayor.toString()+"///"+cantMayor;
-			mayorContado=elementoMayor;
 		}
 		return respuesta;
 	}

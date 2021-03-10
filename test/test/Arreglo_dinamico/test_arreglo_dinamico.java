@@ -4,40 +4,41 @@ import java.util.Comparator;
 import java.util.concurrent.ThreadLocalRandom;
 
 import model.data_structures.ArregloDinamico;
+import model.data_structures.YoutubeVideo;
 import utils.Ordenamiento;
 
 public class test_arreglo_dinamico {
 	    public static void main(String[] args) 
 	    {
-	        ArregloDinamico<String> arr = new ArregloDinamico<String>(500);
-	        for(int i = 0; i < 18; i++)
-	        {
-	        	int numero = ThreadLocalRandom.current().nextInt(0, 8);
-	        	String mensaje = "impar";
-	        	if(numero%2==0)
-	        	{
-	        		mensaje = "par";
-	        	}
-	            arr.addLast(numero+"/"+mensaje);
-	            System.out.println(arr.getElement(i+1));
-	        }
-	        System.out.println("Agregó");
-	        String aBuscar = "6/impar";
-	        Comparator<String> comp2 = new ComparadorString();
-	        Ordenamiento<String> ord = new Ordenamiento<String>();
-	        Comparator<String> comp = new ComparadorInteger();
-	        System.out.println("Voy a ordenar");
-	        ArregloDinamico<String> ord2 = arr.sublistaR1(comp, aBuscar);
-	        System.out.println("Agregados");
-	        ord.ordenarMerge(ord2, comp2, true);
-	        for(int i = 1; i<=ord2.size();i++)
-	        {
-	        	System.out.println(ord2.getElement(i));
-	        }
-//	        System.out.println(arr.size());
-	        System.out.println("Cual es el mayor?");
-	        String revisar = ord2.mayorContado(comp2);
-	        System.out.println(revisar);
+//	        ArregloDinamico<String> arr = new ArregloDinamico<String>(500);
+//	        for(int i = 0; i < 18; i++)
+//	        {
+//	        	int numero = ThreadLocalRandom.current().nextInt(0, 8);
+//	        	String mensaje = "impar";
+//	        	if(numero%2==0)
+//	        	{
+//	        		mensaje = "par";
+//	        	}
+//	            arr.addLast(numero+"/"+mensaje);
+//	            System.out.println(arr.getElement(i+1));
+//	        }
+//	        System.out.println("Agregó");
+//	        String aBuscar = "6/impar";
+//	        Comparator<String> comp2 = new ComparadorString();
+//	        Ordenamiento<String> ord = new Ordenamiento<String>();
+//	        Comparator<String> comp = new ComparadorInteger();
+//	        System.out.println("Voy a ordenar");
+//	        ArregloDinamico<String> ord2 = arr.sublistaR1(comp, aBuscar);
+//	        System.out.println("Agregados");
+//	        ord.ordenarMerge(ord2, comp2, true);
+//	        for(int i = 1; i<=ord2.size();i++)
+//	        {
+//	        	System.out.println(ord2.getElement(i));
+//	        }
+////	        System.out.println(arr.size());
+//	        System.out.println("Cual es el mayor?");
+//	        String revisar = ord2.mayorContado(comp2);
+//	        System.out.println(revisar);
 //	        boolean enOrden = true;
 //	        for(int i = 1; i < arr.size() && enOrden;i++)
 //	        {
@@ -45,6 +46,15 @@ public class test_arreglo_dinamico {
 //	                    enOrden = false;
 //	        }
 //	        System.out.println(enOrden);
+	    	
+	    	String cosa1 = "üî¥ Das ging ZU WEIT!! - BUSHIDO Ansage an die Geissens nach Angriff gegen FARID BANG! üî¥";
+	    	String cosa2 = "caca";
+	    	int num = cosa1.compareTo(cosa2);
+	    	System.out.println(num);
+	    	YoutubeVideo vid1 = new YoutubeVideo("", "", cosa1, "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+	    	YoutubeVideo vid2 = new YoutubeVideo("", "", cosa2, "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+	    	Comparator<YoutubeVideo> comparador = new YoutubeVideo.ComparadorNombre();
+	    	System.out.println(comparador.compare(vid1, vid2));
 	    }
 	    
 	    
